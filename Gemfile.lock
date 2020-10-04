@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    auth0_current_user (0.1.0.3)
+    auth0_current_user (0.1.0.4)
       activesupport
       jwt
       request_store

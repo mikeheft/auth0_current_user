@@ -23,7 +23,18 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+After including the gem in your Gemfile, run `rails g auth0_current_user:install` to install the initializer. This configuration of the gem is dependant on a couple of attributes:
+  * `auth0_domain`
+    * This is the domain from setting up your Auth0 application.
+  * `auth0_audience`
+    * This is the api identifier that you chose when creating your api(M2M) application
+  * `authenticated_klass`
+    * Defaults to `User`, but if you have a different model name for the class that will be logging in and being authenticate, be sure to change that in the initializeer.
+    * accepted values are symbols or strings
+      * :user, 'user', :User, 'User'
+      * :my_user, 'my_user', :MyUser, 'MyUser'
+
+To take advantage of the Auth0 authenticating add `include Auth0CurrentUser::Secured` to your base controller or and controller that you wish to be locked down for authentication.
 
 ## Development
 

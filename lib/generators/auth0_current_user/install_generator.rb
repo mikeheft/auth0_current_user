@@ -9,7 +9,7 @@ module Auth0CurrentUser
     end
 
     def install_auth0_current_user
-      template 'auth0_current_user.rb', 'config/initializers'
+      template 'auth0_current_user.rb', 'config/initializers/auth0_current_user.rb'
     end
   end
 

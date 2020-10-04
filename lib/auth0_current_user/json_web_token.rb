@@ -2,7 +2,7 @@
 require 'net/http'
 require 'uri'
 require 'jwt'
-require '../../lib/auth0_current_user/configuration'
+require_relative './configuration'
 
 class JsonWebToken
   def self.verify(token)

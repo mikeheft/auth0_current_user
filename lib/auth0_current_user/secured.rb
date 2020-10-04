@@ -3,6 +3,7 @@
 require 'jwt'
 require 'request_store'
 require 'auth0_current_user/json_web_token'
+require 'auth0_current_user/configuration'
 
 module Auth0CurrentUser
   module Secured
@@ -39,11 +40,26 @@ module Auth0CurrentUser
 
     def set_current_user(token)
       email = get_email(token)
-      RequestStore.store[:current_user] ||= User.find_by(email: email)
+      RequestStore.store[:current_user] ||= Kernel.const_get(authenticated_klass).find_by(email: email)
     end
 
     def current_user
       @current_user ||= RequestStore.store[:current_user]
+    end
+
+    def authenticated_klass
+      unless configuration.authenticated_klass
+        raise NotImplementedError, 'You must define the #authenitcated_klass in config/initializers/auth0_current_user'
+        return
+      end
+      
+      @authenticated_klass ||= configuration.authenticated_klass.to_s.classify
+    rescue StandardError => e
+      Rails.logger.error(e.message)
+    end
+
+    def configuration
+      @configuration ||= Configuration.new
     end
 
   end

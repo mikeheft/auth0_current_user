@@ -28,6 +28,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'activesupport'
   spec.add_dependency 'jwt'
   spec.add_dependency 'request_store'
-  spec.add_dependency 'uri'
-  
+
 end

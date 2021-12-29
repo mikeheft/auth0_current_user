@@ -8,7 +8,6 @@ module Auth0CurrentUser
     end
 
     def current_user
-      require 'pry'; binding.pry
       @_current_user ||= RequestStore.store[:current_user] ||= Kernel.const_get(authenticated_klass).find_by(email: email) 
     end
 

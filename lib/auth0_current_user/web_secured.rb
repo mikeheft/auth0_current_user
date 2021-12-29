@@ -3,12 +3,12 @@ module Auth0CurrentUser
     extend ActiveSupport::Concern
 
     included do
-      helper_method :current_user
       before_action :logged_in_using_omniauth?
+      helper_method :current_user
     end
 
     def current_user
-      @_current_user ||= RequestStore.store[:current_user] ||= Kernel.const_get(authenticated_klass).find_by(email: email) 
+      @_current_user ||= Kernel.const_get(authenticated_klass).find_by(email: email)
     end
 
     private
@@ -19,7 +19,7 @@ module Auth0CurrentUser
         return
       end
 
-      @authenticated_klass ||= configuration.authenticated_klass.to_s.classify
+      @_authenticated_klass ||= configuration.authenticated_klass.to_s.classify
     rescue NameError => e
       Rails.logger.error("You must create a #{authenticated_klass} model/migration")
     rescue StandardError => e
@@ -27,15 +27,19 @@ module Auth0CurrentUser
     end
 
     def configuration
-      @configuration ||= Configuration.new
+      @_configuration ||= Configuration.new
     end
 
     def email
-      @_email ||= session.dig(:userinfo, :email)
+      @_email ||= userinfo['email'] || userinfo['name']
     end
 
     def logged_in_using_omniauth?
-      redirect_to '/' unless current_user || session[:userinfo].present?
+      redirect_to '/' unless session[:userinfo].present? && Time.zone.now < Time.zone.at(userinfo['exp'])
+    end
+
+    def userinfo
+      session['userinfo'] || {}
     end
 
   end

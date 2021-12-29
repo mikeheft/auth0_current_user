@@ -1,10 +1,11 @@
 # frozen_string_literal: true
+
 require 'net/http'
 require 'uri'
 require 'jwt'
 require_relative './configuration'
 
-class Auth0CurrentUser::Api::JsonWebToken
+class JsonWebToken
   def self.verify(token)
     JWT.decode(token, nil,
                true, # Verify the signature of this token
@@ -13,8 +14,8 @@ class Auth0CurrentUser::Api::JsonWebToken
                verify_iss: true,
                aud: configuration.auth0_audience,
                verify_aud: true) do |header|
-      jwks_hash[header['kid']]
-    end
+                 jwks_hash[header['kid']]
+               end
   end
 
   def self.jwks_hash
@@ -22,7 +23,7 @@ class Auth0CurrentUser::Api::JsonWebToken
     jwks_keys = Array(JSON.parse(jwks_raw)['keys'])
     Hash[
       jwks_keys
-        .map do |k|
+      .map do |k|
         [
           k['kid'],
           OpenSSL::X509::Certificate.new(
@@ -41,3 +42,4 @@ class Auth0CurrentUser::Api::JsonWebToken
     @configuration ||= Auth0CurrentUser::Configuration.new
   end
 end
+

@@ -5,7 +5,7 @@ require 'request_store'
 require 'auth0_current_user/json_web_token'
 require 'auth0_current_user/configuration'
 
-module Auth0CurrentUser::Api::Secured
+module ApiSecured
   extend ActiveSupport::Concern
 
   included do
@@ -30,11 +30,11 @@ module Auth0CurrentUser::Api::Secured
   end
 
   def auth_token
-    JsonWebToken.verify(http_token)
+    ::JsonWebToken.verify(http_token)
   end
 
   def get_email(token)
-    JsonWebToken.get_claim(token, 'email')
+    ::JsonWebToken.get_claim(token, 'email')
   end
 
   def set_current_user(token)
@@ -62,3 +62,4 @@ module Auth0CurrentUser::Api::Secured
   end
 
 end
+

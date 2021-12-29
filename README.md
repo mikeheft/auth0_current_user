@@ -32,9 +32,11 @@ After including the gem in your Gemfile, run `rails g auth0_current_user:install
 
 To take advantage of the Auth0 authentication there are two flows you can use by simply including the relevant module in which ever controller you wish to lockdown.
 1. Web
-  a. `include Auth0CurrentUser::WebSecured` 
+
+   a. `include Auth0CurrentUser::WebSecured` 
 3. Api
-  a. `include Auth0CurrentUser::ApiSecured` 
+
+   a. `include Auth0CurrentUser::ApiSecured` 
   
 In either case, you will have access to the `current_user` method. The `WebSecured` will check for `current_user` or `session['userinfo']` and the `ApiSecured` will check against the JsonWebToken being passed in.
 

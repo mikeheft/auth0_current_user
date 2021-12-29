@@ -4,7 +4,7 @@ require 'uri'
 require 'jwt'
 require_relative './configuration'
 
-class JsonWebToken
+class Auth0CurrentUser::Api::JsonWebToken
   def self.verify(token)
     JWT.decode(token, nil,
                true, # Verify the signature of this token

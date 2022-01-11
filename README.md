@@ -20,12 +20,14 @@ Or install it yourself as:
 ## Usage
 
 After including the gem in your Gemfile, run `rails g auth0_current_user:install` to install the initializer. This configuration of the gem is dependant on a couple of attributes:
+  * `client_id`
+    * This is the client id for your tenant. It is used to facilitate redirecting to the `/authorize` endpoint in `WebSecured` when the user's session has expired or is non-existant 
   * `auth0_domain`
     * This is the domain from setting up your Auth0 application.
   * `auth0_audience`
     * This is the api identifier that you chose when creating your api(M2M) application
   * `authenticated_klass`
-    * Defaults to `User`, but if you have a different model name for the class that will be logging in and being authenticate, be sure to change that in the initializeer.
+    * Defaults to `User`, but if you have a different model name for the class that will be logging in and being authenticate, be sure to change that in the initializer.
     * accepted values are symbols or strings
       * :user, 'user', :User, 'User'
       * :my_user, 'my_user', :MyUser, 'MyUser'

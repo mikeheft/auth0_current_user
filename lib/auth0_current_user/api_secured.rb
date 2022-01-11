@@ -58,7 +58,7 @@ module ApiSecured
   end
 
   def configuration
-    @configuration ||= Configuration.new
+    @configuration ||= Auth0CurrentUser.configuration
   end
 
 end

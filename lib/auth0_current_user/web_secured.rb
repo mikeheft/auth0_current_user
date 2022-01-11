@@ -1,3 +1,5 @@
+require 'auth0_current_user/configuration'
+
 module Auth0CurrentUser
   module WebSecured
     extend ActiveSupport::Concern
@@ -35,11 +37,19 @@ module Auth0CurrentUser
     end
 
     def logged_in_using_omniauth?
-      redirect_to '/' unless session[:userinfo].present? && Time.zone.now < Time.zone.at(userinfo['exp'])
+      redirect_to authorization_endpoint unless session[:userinfo].present? && Time.zone.now < Time.zone.at(userinfo['exp'])
+    end
+
+    def authorization_endpoint
+      @_authorization_endpoint ||= "https://#{configuration.auth0_domain}/authorize?response_type=code&client_id=#{configuration.client_id}"
     end
 
     def userinfo
       session['userinfo'] || {}
+    end
+
+    def configuration
+      @configuration ||= Auth0CurrentUser.configuration
     end
 
   end
